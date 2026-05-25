@@ -1,0 +1,29 @@
+<idea-plugin>
+  <id>com.github.rightterminal</id>
+  <name>Right Terminal</name>
+  <vendor email="local@example.com">Local</vendor>
+  <version>0.1.0</version>
+
+  <idea-version since-build="253" until-build="253.*" />
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>org.jetbrains.plugins.terminal</depends>
+
+  <description><![CDATA[
+    Adds a terminal tool window on the right side of WebStorm for local use.
+  ]]></description>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow
+        id="Right Terminal"
+        anchor="right"
+        icon="org.jetbrains.plugins.terminal.TerminalIcons.OpenTerminal_13x13"
+        factoryClass="com.github.rightterminal.RightTerminalToolWindowFactory"
+        canCloseContents="true"
+        doNotActivateOnStart="true"
+        secondary="false" />
+    <toolWindow.splitContentProvider
+        toolWindowId="Right Terminal"
+        implementationClass="com.github.rightterminal.RightTerminalSplitContentProvider" />
+  </extensions>
+</idea-plugin>
