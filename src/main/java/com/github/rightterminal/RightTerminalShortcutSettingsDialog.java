@@ -114,11 +114,6 @@ final class RightTerminalShortcutSettingsDialog extends DialogWrapper {
   }
 
   private JComponent createEditorPanel() {
-    commandField.setLineWrap(true);
-    commandField.setWrapStyleWord(false);
-    descriptionField.setLineWrap(true);
-    descriptionField.setWrapStyleWord(true);
-
     JPanel checkBoxPanel = new JBPanel<>(new BorderLayout(JBUI.scale(12), 0));
     checkBoxPanel.add(newTabCheckBox, BorderLayout.WEST);
     checkBoxPanel.add(immediatelyCheckBox, BorderLayout.CENTER);
@@ -129,7 +124,7 @@ final class RightTerminalShortcutSettingsDialog extends DialogWrapper {
         .addLabeledComponentFillVertically("Description:", new JBScrollPane(descriptionField))
         .addLabeledComponent("", checkBoxPanel)
         .getPanel();
-    formPanel.setBorder(JBUI.Borders.empty(0, 12, 0, 0));
+    formPanel.setBorder(JBUI.Borders.empty(0, 16, 0, 0));
     formPanel.setMinimumSize(JBUI.size(360, 260));
     return formPanel;
   }
@@ -151,9 +146,9 @@ final class RightTerminalShortcutSettingsDialog extends DialogWrapper {
         }
 
         append(value.displayName(), SimpleTextAttributes.REGULAR_ATTRIBUTES);
-        String command = emptyToNull(value.command);
-        if (command != null) {
-          append("  " + singleLine(command), SimpleTextAttributes.GRAYED_SMALL_ATTRIBUTES);
+        String description = emptyToNull(value.description);
+        if (description != null) {
+          append("  " + singleLine(description), SimpleTextAttributes.GRAYED_SMALL_ATTRIBUTES);
         }
       }
     });
@@ -174,6 +169,14 @@ final class RightTerminalShortcutSettingsDialog extends DialogWrapper {
   }
 
   private void configureFields() {
+    nameField.setMargin(JBUI.insets(0, 8));
+    commandField.setLineWrap(true);
+    commandField.setWrapStyleWord(false);
+    commandField.setMargin(JBUI.insets(8, 8));
+    descriptionField.setLineWrap(true);
+    descriptionField.setWrapStyleWord(true);
+    descriptionField.setMargin(JBUI.insets(8, 8));
+
     DocumentListener documentListener = new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent event) {
