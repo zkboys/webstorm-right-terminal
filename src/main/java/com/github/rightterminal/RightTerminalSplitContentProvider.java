@@ -1,6 +1,7 @@
 package com.github.rightterminal;
 
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.toolWindow.ToolWindowSplitContentProvider;
@@ -11,6 +12,12 @@ public final class RightTerminalSplitContentProvider implements ToolWindowSplitC
   @Override
   public @NotNull Content createContentCopy(@NotNull Project project, @NotNull Content content) {
     Disposable splitDisposable = Disposer.newDisposable("Right Terminal Split Tab");
-    return RightTerminalContent.create(project, splitDisposable, content.getDisplayName());
+    Content splitContent = RightTerminalContent.create(project, splitDisposable, content.getDisplayName());
+    splitContent.setActions(
+        RightTerminalToolWindowFactory.createContentActions(project, splitContent),
+        ActionPlaces.TOOLWINDOW_CONTENT,
+        splitContent.getComponent()
+    );
+    return splitContent;
   }
 }

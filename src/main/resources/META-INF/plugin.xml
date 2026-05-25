@@ -27,4 +27,17 @@
         toolWindowId="Right Terminal"
         implementationClass="com.github.rightterminal.RightTerminalSplitContentProvider" />
   </extensions>
+
+  <actions>
+    <action
+        id="RightTerminal.SendToTerminal"
+        class="com.github.rightterminal.RightTerminalSendToTerminalAction"
+        text="Send to Right Terminal"
+        description="Send the current file reference to Right Terminal">
+      <add-to-group group-id="EditorPopupMenu" anchor="last" />
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K" />
+      <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt K" />
+      <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt K" />
+    </action>
+  </actions>
 </idea-plugin>
