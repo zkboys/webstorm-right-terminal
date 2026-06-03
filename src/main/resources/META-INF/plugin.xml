@@ -4,7 +4,7 @@
   <vendor email="local@example.com">Local</vendor>
   <version>0.1.0</version>
 
-  <idea-version since-build="253" until-build="253.*" />
+  <idea-version since-build="253" until-build="261.*" />
 
   <depends>com.intellij.modules.platform</depends>
   <depends>org.jetbrains.plugins.terminal</depends>

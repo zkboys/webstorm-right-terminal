@@ -26,9 +26,9 @@ if [[ ! -x "$JAVAC" ]]; then
   exit 1
 fi
 
-if ! command -v "$JAR" >/dev/null 2>&1; then
+if ! command -v "$JAR" >/dev/null 2>&1 && ! command -v zip >/dev/null 2>&1; then
   echo "jar command not found: $JAR" >&2
-  echo "Set JAR=/path/to/jar, or install a JDK that provides jar." >&2
+  echo "Set JAR=/path/to/jar, install a JDK that provides jar, or install zip." >&2
   exit 1
 fi
 
@@ -42,7 +42,19 @@ find "$ROOT_DIR/src/main/java" -type f -name '*.java' > "$BUILD_DIR/sources.txt"
 "$JAVAC" --release 21 -encoding UTF-8 -classpath "$CLASSPATH" -d "$CLASSES_DIR" @"$BUILD_DIR/sources.txt"
 
 cp "$ROOT_DIR/src/main/resources/META-INF/plugin.xml" "$BUILD_DIR/resources/META-INF/plugin.xml"
-"$JAR" --create --file "$PACKAGE_DIR/lib/right-terminal.jar" -C "$CLASSES_DIR" . -C "$BUILD_DIR/resources" .
+if "$JAR" --create --file "$PACKAGE_DIR/lib/right-terminal.jar" -C "$CLASSES_DIR" . -C "$BUILD_DIR/resources" . >/dev/null 2>&1; then
+  :
+elif command -v zip >/dev/null 2>&1; then
+  (
+    cd "$CLASSES_DIR"
+    zip -qr "$PACKAGE_DIR/lib/right-terminal.jar" .
+    cd "$BUILD_DIR/resources"
+    zip -qr "$PACKAGE_DIR/lib/right-terminal.jar" .
+  )
+else
+  echo "Failed to create plugin jar with $JAR, and zip is not available." >&2
+  exit 1
+fi
 
 (
   cd "$BUILD_DIR/package"

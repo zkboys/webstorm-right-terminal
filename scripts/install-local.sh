@@ -9,12 +9,14 @@ PLUGIN_ID="right-terminal"
 "$ROOT_DIR/scripts/build-plugin.sh" >/tmp/right-terminal-build.log
 cat /tmp/right-terminal-build.log
 
-if ! command -v jq >/dev/null 2>&1; then
-  echo "jq is required to detect WebStorm config directory." >&2
+if command -v jq >/dev/null 2>&1; then
+  DATA_DIR="$(jq -r '.dataDirectoryName' "$PRODUCT_INFO")"
+elif command -v python3 >/dev/null 2>&1; then
+  DATA_DIR="$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["dataDirectoryName"])' "$PRODUCT_INFO")"
+else
+  echo "jq or python3 is required to detect WebStorm config directory." >&2
   exit 1
 fi
-
-DATA_DIR="$(jq -r '.dataDirectoryName' "$PRODUCT_INFO")"
 PLUGINS_DIR="$HOME/Library/Application Support/JetBrains/$DATA_DIR/plugins"
 TARGET_DIR="$PLUGINS_DIR/$PLUGIN_ID"
 
